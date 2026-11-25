@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montesquieu AI - Chat</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #101a2b;
+    color: #f5ead5;
+    font-family: Georgia, serif;
+}
+
+header {
+    background: #18263b;
+    padding: 22px;
+    text-align: center;
+    border-bottom: 2px solid #c4a15d;
+}
+
+header h1 {
+    color: #dfbd79;
+    letter-spacing: 3px;
+}
+
+.back {
+    color: #dfbd79;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 850px;
+    margin: 35px auto;
+    padding: 15px;
+}
+
+.chat {
+    height: 420px;
+    overflow-y: auto;
+    background: #1d2b40;
+    border: 1px solid #c4a15d;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.message {
+    padding: 13px;
+    margin: 12px 0;
+    border-radius: 9px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.bot {
+    background: #293b54;
+    border-left: 3px solid #dfbd79;
+}
+
+.user {
+    background: #405675;
+    text-align: right;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #c4a15d;
+    background: #1d2b40;
+    color: white;
+    font-size: 16px;
+}
+
+button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #c4a15d;
+    color: #101a2b;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e2c583;
+}
+
+.actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #999;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>MONTESQUIEU AI</h1>
+    <p>Il tuo assistente filosofico</p>
+    <a class="back" href="index.html">← Torna alla homepage</a>
+</header>
+
+<div class="container">
+
+    <h2>Dialoga con Montesquieu</h2>
+
+    <div class="chat" id="chat">
+        <div class="message bot">
+            MONTESQUIEU AI:
+
+            Benvenuto! Sono un assistente filosofico
+            ispirato al pensiero di Montesquieu.
+
+            Puoi chiedermi informazioni su libertà,
+            leggi, politica, giustizia e Illuminismo.
+        </div>
+    </div>
+
+    <div class="controls">
+        <input
+            type="text"
+            id="question"
+            placeholder="Scrivi una domanda..."
+        >
+
+        <button onclick="sendMessage()">INVIA</button>
+    </div>
+
+    <div class="actions">
+        <button onclick="clearChat()">NUOVA CHAT</button>
+    </div>
+
+</div>
+
+<footer>
+    MONTESQUIEU AI - Filosofia e intelligenza artificiale
+</footer>
+
+<script>
+
+const chat = document.getElementById("chat");
+const question = document.getElementById("question");
+
+function addMessage(text, type) {
+    const div = document.createElement("div");
+    div.className = "message " + type;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function answer(text) {
+
+    const q = text.toLowerCase();
+
+    if (q.includes("ciao") || q.includes("salve")) {
+        return "Benvenuto! Quale argomento filosofico desideri approfondire?";
+    }
+
+    if (q.includes("chi sei")) {
+        return "Sono Montesquieu AI, un assistente virtuale ispirato al pensiero del filosofo francese.";
+    }
+
+    if (q.includes("montesquieu")) {
+        return "Montesquieu nacque nel 1689 in Francia. Fu un filosofo illuminista, giurista e autore di Lo spirito delle leggi.";
+    }
+
+    if (q.includes("poter")) {
+        return "Montesquieu distingue tre poteri: legislativo, esecutivo e giudiziario. La loro separazione serve a limitare gli abusi e proteggere la libertà.";
+    }
+
+    if (q.includes("libert")) {
+        return "Per Montesquieu la libertà politica è legata alla sicurezza dei cittadini e a un sistema di leggi che impedisca gli abusi di potere.";
+    }
+
+    if (q.includes("giustizia")) {
+        return "La giustizia è fondamentale per una società equilibrata. Le leggi devono essere comprese in rapporto alla società e alle sue condizioni.";
+    }
+
+    if (q.includes("governo")) {
+        return "Montesquieu analizzò tre forme di governo: repubblica, monarchia e dispotismo.";
+    }
+
+    if (q.includes("leggi") || q.includes("spirito")) {
+        return "Lo spirito delle leggi, pubblicato nel 1748, è l'opera principale di Montesquieu. Studia il rapporto tra leggi, società, istituzioni e forme di governo.";
+    }
+
+    if (q.includes("illuminismo")) {
+        return "L'Illuminismo fu un movimento culturale del XVIII secolo che valorizzava la ragione, la conoscenza e la libertà di pensiero.";
+    }
+
+    return "È una questione interessante. Possiamo analizzarla attraverso il pensiero di Montesquieu, considerando il rapporto tra leggi, libertà e società.";
+}
+
+function sendMessage() {
+
+    const text = question.value.trim();
+
+    if (text === "") return;
+
+    addMessage("TU: " + text, "user");
+
+    const response = answer(text);
+
+    addMessage("MONTESQUIEU AI: " + response, "bot");
+
+    question.value = "";
+    question.focus();
+}
+
+function clearChat() {
+    chat.innerHTML = "";
+    addMessage("MONTESQUIEU AI: Nuova conversazione! Quale argomento desideri discutere?", "bot");
+}
+
+question.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+});
+
+</script>
+
+</body>
+</html>
